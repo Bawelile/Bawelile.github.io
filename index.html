@@ -1287,5 +1287,238 @@
     });
   });
 </script>
+<!-- ============================================================
+  PORTFOLIO Q&A WIDGET
+  Paste this entire block right before the closing </body> tag
+  in your index.html. Self-contained: no external dependencies,
+  no API keys, runs entirely in the visitor's browser.
+============================================================ -->
+
+<style>
+  #bq-launcher {
+    position: fixed; bottom: 28px; right: 28px; z-index: 999;
+    width: 60px; height: 60px; border-radius: 50%;
+    background: linear-gradient(135deg, #1A6B8A, #C8962A);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+    border: none; transition: transform 0.2s;
+  }
+  #bq-launcher:hover { transform: scale(1.06); }
+  #bq-launcher svg { width: 26px; height: 26px; }
+
+  #bq-panel {
+    position: fixed; bottom: 100px; right: 28px; z-index: 999;
+    width: 380px; max-width: calc(100vw - 40px); height: 520px;
+    max-height: calc(100vh - 140px);
+    background: #0D1B2A; border: 1px solid rgba(138,163,188,0.2);
+    border-radius: 14px; box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    display: none; flex-direction: column; overflow: hidden;
+    font-family: 'DM Sans', system-ui, sans-serif;
+  }
+  #bq-panel.open { display: flex; }
+
+  #bq-header {
+    padding: 16px 18px; border-bottom: 1px solid rgba(138,163,188,0.12);
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(255,255,255,0.02);
+  }
+  #bq-header .title { font-family: 'DM Serif Display', serif; font-size: 16px; color: #fff; }
+  #bq-header .sub { font-size: 11px; color: #8BA3BC; font-family: 'DM Mono', monospace; margin-top: 2px; }
+  #bq-close { background: none; border: none; color: #8BA3BC; cursor: pointer; font-size: 18px; line-height: 1; padding: 4px; }
+  #bq-close:hover { color: #fff; }
+
+  #bq-messages {
+    flex: 1; overflow-y: auto; padding: 16px 18px;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .bq-msg { max-width: 88%; font-size: 13.5px; line-height: 1.6; }
+  .bq-msg.user { align-self: flex-end; background: #1A6B8A; color: #fff; padding: 10px 13px; border-radius: 12px 12px 2px 12px; }
+  .bq-msg.bot { align-self: flex-start; background: rgba(255,255,255,0.05); color: #C5D5E4; padding: 10px 13px; border-radius: 12px 12px 12px 2px; border: 1px solid rgba(138,163,188,0.1); }
+  .bq-msg.bot a { color: #E8B84B; text-decoration: none; border-bottom: 1px solid rgba(232,184,75,0.4); }
+  .bq-msg.bot a:hover { border-bottom-color: #E8B84B; }
+  .bq-msg .bq-conf { display: block; font-family: 'DM Mono', monospace; font-size: 10px; color: #4A6080; margin-top: 6px; letter-spacing: 0.04em; text-transform: uppercase; }
+
+  .bq-suggestions { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 18px 12px; }
+  .bq-chip {
+    font-size: 11.5px; color: #8BA3BC; background: rgba(138,163,188,0.08);
+    border: 1px solid rgba(138,163,188,0.18); border-radius: 999px;
+    padding: 6px 12px; cursor: pointer; transition: all 0.15s;
+  }
+  .bq-chip:hover { color: #fff; border-color: rgba(200,150,42,0.5); background: rgba(200,150,42,0.1); }
+
+  #bq-inputRow {
+    display: flex; gap: 8px; padding: 12px 14px;
+    border-top: 1px solid rgba(138,163,188,0.12); background: rgba(255,255,255,0.02);
+  }
+  #bq-input {
+    flex: 1; background: rgba(255,255,255,0.04); border: 1px solid rgba(138,163,188,0.2);
+    border-radius: 8px; color: #fff; padding: 9px 12px; font-size: 13px; font-family: inherit;
+    outline: none;
+  }
+  #bq-input:focus { border-color: rgba(200,150,42,0.5); }
+  #bq-send {
+    background: #C8962A; color: #0D1B2A; border: none; border-radius: 8px;
+    padding: 0 16px; font-weight: 600; font-size: 13px; cursor: pointer;
+  }
+  #bq-send:hover { background: #E8B84B; }
+
+  @media (max-width: 480px) {
+    #bq-panel { right: 12px; left: 12px; width: auto; bottom: 90px; }
+    #bq-launcher { right: 16px; bottom: 16px; }
+  }
+</style>
+
+<button id="bq-launcher" aria-label="Ask about Bawelile's background">
+  <svg viewBox="0 0 24 24" fill="none" stroke="#0D1B2A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+  </svg>
+</button>
+
+<div id="bq-panel">
+  <div id="bq-header">
+    <div>
+      <div class="title">Ask about Bawelile</div>
+      <div class="sub">Retrieval-based · runs in your browser · no API calls</div>
+    </div>
+    <button id="bq-close" aria-label="Close">✕</button>
+  </div>
+  <div id="bq-messages"></div>
+  <div class="bq-suggestions" id="bq-suggestions"></div>
+  <div id="bq-inputRow">
+    <input id="bq-input" type="text" placeholder="e.g. Does she know SQL?" autocomplete="off">
+    <button id="bq-send">Ask</button>
+  </div>
+</div>
+
+<script>
+(function() {
+  // ---------------------------------------------------------------------
+  // KNOWLEDGE BASE — pulled directly from the real resume and portfolio
+  // content. Each entry: the text answer, and a link if relevant.
+  // ---------------------------------------------------------------------
+  const KB = [
+    { q: "background summary who is Bawelile experience overview", a: "Bawelile Gule is a data scientist and AI strategist with 10+ years spanning statistical research, retail operations, and CPG-adjacent analytics. She holds an MBA and is completing an MSAI at Kennesaw State University. Every project she builds ends with a dollar figure or an executive-ready recommendation, not just a model metric.", link: null },
+    { q: "contact email reach out hire her", a: "The best way to reach Bawelile is by email at gulebawe@gmail.com, or through LinkedIn.", link: "https://www.linkedin.com/in/BawelileGule" },
+    { q: "resume cv download apply", a: "Bawelile's resume can be requested directly by email at gulebawe@gmail.com — she tailors it per role, so the best version depends on what you're hiring for.", link: null },
+    { q: "linkedin profile social", a: "Bawelile's LinkedIn profile has her full experience history and posts about her project work.", link: "https://www.linkedin.com/in/BawelileGule" },
+    { q: "github code repositories", a: "All of Bawelile's project code is public on GitHub, including live Colab notebooks you can run directly.", link: "https://github.com/Bawelile" },
+    { q: "medium articles writing blog", a: "Bawelile writes on Medium about her project work — the technical builds, and what actually went wrong along the way, not just the polished outcomes.", link: "https://medium.com/@BawelileGule" },
+    { q: "education degree university masters MBA", a: "Bawelile is completing a Master of Science in Artificial Intelligence at Kennesaw State University (expected Dec 2026). She also holds an MBA from the Management College of Southern Africa, a transferred MS in Business Analytics from Mercer University, and a BSc in Statistics from the University of Pretoria.", link: null },
+    { q: "SQL database experience", a: "Yes — Bawelile has hands-on SQL experience across multiple projects, including writing CTEs and window functions in the Multi-Source Pricing Intelligence Platform, and Spark SQL in her distributed forecasting work.", link: "https://github.com/Bawelile/Multi-Source-Pricing-Intelligence-Platform" },
+    { q: "NoSQL MongoDB unstructured data experience", a: "Yes — her Multi-Source Pricing Intelligence Platform project works with NoSQL document data (schema-flexible support tickets) and unstructured text with a PII detection and redaction layer built on top of it.", link: "https://github.com/Bawelile/Multi-Source-Pricing-Intelligence-Platform" },
+    { q: "python programming language skills", a: "Python is one of Bawelile's core tools, used with pandas, scikit-learn, XGBoost, and Prophet across nearly every project in her portfolio.", link: "https://github.com/Bawelile" },
+    { q: "machine learning AI experience", a: "Bawelile has built and deployed multiple ML systems: a demand forecasting ensemble, a Grad-CAM explainable AI classifier, a containerized ML API with CI/CD, a RAG business intelligence assistant, and an AI phishing detector with 96.98% test accuracy.", link: "https://bawelile.github.io" },
+    { q: "forecasting demand planning experience", a: "Bawelile built a retail demand forecasting pipeline (Prophet + XGBoost ensemble, MAPE under 10%) and a distributed version scaled with PySpark and Delta Lake. She also has 7 years of hands-on forecasting experience as a General Manager, where her models drove a 15-20% weekly sales increase.", link: "https://github.com/Bawelile/retail-demand-forecasting" },
+    { q: "pricing analyst elasticity revenue optimization", a: "Bawelile has deep pricing analytics experience: she rebuilt a national railway authority's pricing model from scratch (earning a CEO Employee of the Year Award), and built a Pricing & Revenue Optimization Model and a Multi-Source Pricing Intelligence Platform that catches real confounds in elasticity analysis.", link: "https://github.com/Bawelile/Multi-Source-Pricing-Intelligence-Platform" },
+    { q: "data governance PII privacy security compliance", a: "Yes — her AI Data Readiness Scorecard project scores data across freshness, completeness, ownership, and governance dimensions, and her Pricing Intelligence project includes a full PII detection, classification, and redaction pipeline.", link: "https://github.com/Bawelile/ai-data-readiness-scorecard" },
+    { q: "RAG retrieval augmented generation LLM chatbot", a: "Yes — Bawelile has built two RAG systems: a Business Intelligence Assistant using LangChain and ChromaDB, and a Natural-Language Insights Copilot that deliberately shows a real retrieval failure alongside its successes, to prove it knows the difference between confidence and correctness. (You're talking to a simpler version of that same idea right now.)", link: "https://github.com/Bawelile/natural-language-insights-copilot" },
+    { q: "cloud AWS Databricks Spark distributed computing", a: "Bawelile has hands-on experience with PySpark, Delta Lake, and Databricks-compatible pipelines, plus AWS S3 landing-zone patterns in her Multi-Source Pricing Intelligence Platform.", link: "https://github.com/Bawelile/distributed-forecasting-pipeline" },
+    { q: "MLOps deployment Docker CI CD production", a: "Yes — she built a containerized ML API with Docker, deployed via GitHub Actions CI/CD to Google Cloud Run, with health checks and automated rollback on failure.", link: "https://github.com/Bawelile/ml-api-cicd" },
+    { q: "AI security phishing adversarial", a: "Bawelile built a three-class AI phishing detection classifier (legitimate, human-written phishing, AI-generated phishing) achieving 96.98% test accuracy, extending published academic research with a cross-LLM transferability experiment.", link: "https://bawelile-ai-phishing-detection.streamlit.app" },
+    { q: "leadership management P&L general manager", a: "Bawelile spent 7 years as a General Manager owning full P&L accountability for a retail operation — forecasting, pricing, replenishment, and staffing decisions, with real consequences when a forecast was wrong.", link: null },
+    { q: "portfolio projects list how many", a: "Bawelile has 12 live projects spanning forecasting, pricing, explainable AI, MLOps, distributed computing, RAG, AI security, data governance, and retrieval-augmented QA — all with live code and, where applicable, live demos.", link: "https://bawelile.github.io" },
+    { q: "excel tableau power bi dashboards reporting tools", a: "Yes — Bawelile is fluent in Advanced Excel (scenario modeling), Tableau, and Power BI, used throughout her pricing and forecasting projects.", link: null },
+    { q: "location Atlanta Georgia remote where based", a: "Bawelile is based in the Atlanta Metro area, Georgia, and is open to roles in Atlanta, Alpharetta, and Georgia more broadly, as well as remote roles.", link: null },
+    { q: "what roles is she looking for job search targeting", a: "Bawelile is targeting Data Scientist, Data Analyst, Pricing Analyst, Demand Planning Analyst, and AI Strategy roles, with a particular interest in companies doing data governance, pricing, and AI-readiness work.", link: null },
+  ];
+
+  // ---------------------------------------------------------------------
+  // RETRIEVAL ENGINE — pure vanilla JS, no dependencies. A simple
+  // bag-of-words overlap scorer with basic stopword removal. Same
+  // "honest about its limits" philosophy as the Insights Copilot project:
+  // if nothing scores above threshold, it says so and points to contact.
+  // ---------------------------------------------------------------------
+  const STOPWORDS = new Set(["a","an","the","is","are","does","do","did","of","in","on","for","to","and","or","with","her","she","has","have","what","how","can","i","you","your"]);
+
+  function tokenize(s) {
+    return s.toLowerCase().replace(/[^a-z0-9\s]/g, " ").split(/\s+/).filter(w => w && !STOPWORDS.has(w));
+  }
+
+  function score(queryTokens, kbTokens) {
+    const set = new Set(kbTokens);
+    let hits = 0;
+    queryTokens.forEach(t => { if (set.has(t)) hits++; });
+    return queryTokens.length ? hits / queryTokens.length : 0;
+  }
+
+  const KB_TOKENS = KB.map(entry => tokenize(entry.q));
+  const CONFIDENCE_THRESHOLD = 0.34;
+
+  function answer(query) {
+    const qTokens = tokenize(query);
+    let best = { idx: -1, s: 0 };
+    KB_TOKENS.forEach((toks, i) => {
+      const s = score(qTokens, toks);
+      if (s > best.s) best = { idx: i, s };
+    });
+
+    if (best.idx === -1 || best.s < CONFIDENCE_THRESHOLD) {
+      return {
+        text: "I don't have a confident answer for that in what I've been given to work with. Best to ask Bawelile directly — <a href=\"mailto:gulebawe@gmail.com\">gulebawe@gmail.com</a> or on <a href=\"https://www.linkedin.com/in/BawelileGule\" target=\"_blank\">LinkedIn</a>.",
+        conf: "low"
+      };
+    }
+    const entry = KB[best.idx];
+    let text = entry.a;
+    if (entry.link) text += ` <a href="${entry.link}" target="_blank">View →</a>`;
+    return { text, conf: best.s > 0.6 ? "high" : "moderate" };
+  }
+
+  // ---------------------------------------------------------------------
+  // UI WIRING
+  // ---------------------------------------------------------------------
+  const launcher = document.getElementById("bq-launcher");
+  const panel = document.getElementById("bq-panel");
+  const closeBtn = document.getElementById("bq-close");
+  const messages = document.getElementById("bq-messages");
+  const input = document.getElementById("bq-input");
+  const sendBtn = document.getElementById("bq-send");
+  const suggestionsEl = document.getElementById("bq-suggestions");
+
+  const SUGGESTIONS = ["Does she know SQL?", "Pricing analyst experience?", "How many projects?", "Where's her resume?"];
+
+  function addMessage(text, sender, conf) {
+    const div = document.createElement("div");
+    div.className = "bq-msg " + sender;
+    div.innerHTML = text + (conf ? `<span class="bq-conf">${conf} confidence</span>` : "");
+    messages.appendChild(div);
+    messages.scrollTop = messages.scrollHeight;
+  }
+
+  function renderSuggestions() {
+    suggestionsEl.innerHTML = "";
+    SUGGESTIONS.forEach(s => {
+      const chip = document.createElement("div");
+      chip.className = "bq-chip";
+      chip.textContent = s;
+      chip.onclick = () => { input.value = s; handleSend(); };
+      suggestionsEl.appendChild(chip);
+    });
+  }
+
+  function handleSend() {
+    const q = input.value.trim();
+    if (!q) return;
+    addMessage(q, "user");
+    input.value = "";
+    setTimeout(() => {
+      const r = answer(q);
+      addMessage(r.text, "bot", r.conf);
+    }, 260);
+  }
+
+  launcher.onclick = () => {
+    panel.classList.toggle("open");
+    if (panel.classList.contains("open") && messages.children.length === 0) {
+      addMessage("Hi — I'm a small retrieval bot trained on Bawelile's actual resume and project data. Ask me anything, or tap a suggestion below.", "bot");
+      renderSuggestions();
+    }
+  };
+  closeBtn.onclick = () => panel.classList.remove("open");
+  sendBtn.onclick = handleSend;
+  input.addEventListener("keydown", e => { if (e.key === "Enter") handleSend(); });
+})();
+</script>
+
 </body>
 </html>
