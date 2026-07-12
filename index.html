@@ -744,7 +744,7 @@
         <div class="stat-label">Years in strategy & data</div>
       </div>
       <div>
-        <div class="stat-num">12</div>
+        <div class="stat-num">14</div>
         <div class="stat-label">Production ML projects</div>
       </div>
       <div>
@@ -1011,6 +1011,39 @@
       </div>
     </div>
 
+    <div class="project-card">
+      <div class="project-num">13 / Applied Retrieval · Production</div>
+      <div class="project-title">Portfolio Q&A Widget</div>
+      <div class="project-tagline">Answering a recruiter's question before they have to go looking for it</div>
+      <p class="project-desc">A live, self-contained retrieval widget running right on this page (bottom-right corner) — ask it anything about my background and it answers in real time. Deliberately built as client-side retrieval rather than a wrapped LLM API call, since this site is static (GitHub Pages) and exposing an API key client-side would be a real security problem, not a hypothetical one. Same honesty pattern as the Insights Copilot: declines to answer rather than guessing when confidence is low, tested directly against an unanswerable question before shipping.</p>
+      <div class="project-tags">
+        <span class="tag">Vanilla JavaScript</span><span class="tag">Client-Side Retrieval</span>
+        <span class="tag">Zero Dependencies</span><span class="tag">Confidence Thresholding</span>
+        <span class="tag">Static-Site Architecture</span>
+      </div>
+      <div class="project-links">
+        <a href="https://github.com/Bawelile/portfolio-qa-widget" class="project-link" target="_blank">GitHub →</a>
+        <a href="https://bawelile.github.io" class="project-link demo" target="_blank">▶ Try it live (bottom-right) →</a>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-num">14 / People Analytics · Agentic AI</div>
+      <div class="project-title">Freight Rail Performance Management System</div>
+      <div class="project-tagline">A model that fails its own validation, a fairness audit that says don't ship it, and an agent that respects both</div>
+      <p class="project-desc">Extends MBA capstone research (performance management system design for a freight rail organization) into a full four-layer build. Correlation analysis finds a real training-safety relationship that a naive check would have missed entirely. A Random Forest attrition model gets built and evaluated honestly — and loses to a naive baseline, with a fairness audit showing it would have unfairly over-flagged one department. Rather than hide that, an operational monitoring agent gets built on top of it anyway, running in shadow mode, labeling every escalation with the model's known LOW reliability, enforcing human sign-off and no-individual-targeting guardrails in code, and citing the real month-specific data behind every trigger.</p>
+      <div class="project-tags">
+        <span class="tag">scikit-learn</span><span class="tag">Fairness Auditing</span>
+        <span class="tag">Model Evaluation</span><span class="tag">Agentic Monitoring</span>
+        <span class="tag">Human-in-the-Loop</span><span class="tag">People Analytics</span>
+        <span class="tag">Performance Management</span>
+      </div>
+      <div class="project-links">
+        <a href="https://github.com/Bawelile/baobab-performance-management" class="project-link" target="_blank">GitHub →</a>
+        <a href="https://bawelile.github.io/baobab-performance-management/dashboard.html" class="project-link demo" target="_blank">▶ Live Dashboard</a>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -1044,6 +1077,7 @@
       <div style="margin-top:10px;font-size:11px;color:var(--mist);">
         Evidence: <a href="https://colab.research.google.com/github/Bawelile/retail-demand-forecasting/blob/main/RetailDemandForecasting_Portfolio.ipynb" target="_blank" style="color:var(--gold);text-decoration:none;">P1 (Prophet + XGBoost) ↗</a>
         &nbsp;<a href="https://colab.research.google.com/github/Bawelile/xai-gradcam-pipeline/blob/main/GradCAM_XAI_Pipeline.ipynb" target="_blank" style="color:var(--gold);text-decoration:none;">P2 (TensorFlow) ↗</a>
+        &nbsp;<a href="https://github.com/Bawelile/baobab-performance-management" target="_blank" style="color:var(--gold);text-decoration:none;">P14 (Random Forest + fairness audit) ↗</a>
       </div>
     </div>
 
@@ -1124,6 +1158,8 @@
         Evidence: <a href="https://colab.research.google.com/github/Bawelile/rag-bi-assistant/blob/main/RAG_Business_Intelligence.ipynb" target="_blank" style="color:var(--gold);text-decoration:none;">P6 (RAG pipeline) ↗</a>
         &nbsp;<a href="https://colab.research.google.com/github/Bawelile/ai-explainability-agent/blob/main/AI_Explainability_Agent.ipynb" target="_blank" style="color:var(--gold);text-decoration:none;">P7 (LLM agent) ↗</a>
         &nbsp;<a href="https://github.com/Bawelile/natural-language-insights-copilot" target="_blank" style="color:var(--gold);text-decoration:none;">P11 (Insights Copilot) ↗</a>
+        &nbsp;<a href="https://github.com/Bawelile/portfolio-qa-widget" target="_blank" style="color:var(--gold);text-decoration:none;">P13 (Portfolio Widget) ↗</a>
+        &nbsp;<a href="https://github.com/Bawelile/baobab-performance-management" target="_blank" style="color:var(--gold);text-decoration:none;">P14 (Monitoring Agent) ↗</a>
       </div>
     </div>
 
